@@ -4,6 +4,9 @@ const port = 3211;
 
 
 app.use(express.json());
+app.use(middleware);
+app.use(loggerMiddleware);
+
 
 let courses = [
     {id: 1, name: 'grammar'},
@@ -44,3 +47,18 @@ app.listen(3211, () => {
     console.log('Server is running on port 3211');
 })
 
+function middleware(req, res, next) {
+    console.log('Middleware function');
+    next();
+}
+
+function loggerMiddleware(req, res, next) {
+    const method = req.method;
+    const ip = req.ip;
+    const hostname = req.hostname;
+    const date = new Date().toISOString();
+
+    console.log(`[${date}] ${method} request from ${ip} to ${hostname}`);
+
+    next();
+}
